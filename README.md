@@ -35,7 +35,31 @@ Vault is a modern redesign of FileBrowser focused on clean visuals, improved usa
 
 ## Quick Start
 
-Build the frontend assets and the binary from source:
+### Using Install Script (Recommended)
+
+Download and run the installer:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/bharadwajsanket/vault/main/install.sh | sh
+```
+
+The installer will:
+- Detect your OS and architecture (Linux/macOS, x86_64/arm64/armv7)
+- Download the latest Vault binary
+- Install to `/usr/local/bin/vault`
+- Optionally setup a systemd service
+
+Then run:
+
+```bash
+vault -r /path/to/files
+```
+
+Open `http://127.0.0.1:8080` in your browser.
+
+### Building from Source
+
+Build the frontend assets and the binary:
 
 ```bash
 cd frontend
