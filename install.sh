@@ -55,9 +55,12 @@ detect_platform() {
 # Get the latest release version if not specified
 get_latest_version() {
   if [ "$VAULT_VERSION" = "latest" ]; then
-    VAULT_VERSION=$(curl -fsSL https://api.github.com/repos/bharadwajsanket/vault/releases/latest | grep -o '"tag_name": "[^"]*' | head -1 | cut -d'"' -f4)
+    api_response=$(curl -sSL "https://api.github.com/repos/bharadwajsanket/vault/releases/latest")
+    VAULT_VERSION=$(printf '%s' "$api_response" | grep -o '"tag_name"[[:space:]]*:[[:space:]]*"[^"]*"' | head -1 | cut -d'"' -f4)
     if [ -z "$VAULT_VERSION" ]; then
-      echo -e "${RED}Failed to determine latest version${NC}"
+      echo -e "${RED}No GitHub release found or API request failed.${NC}"
+      echo -e "${YELLOW}Please create a release before using install.sh.${NC}"
+      echo -e "${YELLOW}GitHub API response:${NC} $(printf '%s' "$api_response" | head -3)"
       exit 1
     fi
   fi
@@ -66,21 +69,32 @@ get_latest_version() {
 
 # Download the binary
 download_binary() {
-  DOWNLOAD_URL="https://github.com/bharadwajsanket/vault/releases/download/${VAULT_VERSION}/vault_${OS}_${ARCH}.tar.gz"
+  ARCHIVE_NAME="vault-${OS}-${ARCH}.tar.gz"
+  DOWNLOAD_URL="https://github.com/bharadwajsanket/vault/releases/download/${VAULT_VERSION}/${ARCHIVE_NAME}"
   TEMP_DIR=$(mktemp -d)
   BINARY_PATH="${TEMP_DIR}/vault"
 
   echo -e "${YELLOW}Downloading from: ${DOWNLOAD_URL}${NC}"
-  
-  if ! curl -fsSL -o "${TEMP_DIR}/vault.tar.gz" "$DOWNLOAD_URL"; then
-    echo -e "${RED}Failed to download Vault binary${NC}"
+  http_status=$(curl -sSL -w '%{http_code}' -o "${TEMP_DIR}/vault.tar.gz" "$DOWNLOAD_URL")
+
+  if [ "$http_status" != "200" ]; then
+    if [ "$http_status" = "404" ]; then
+      echo -e "${RED}Expected asset not found:${NC} ${DOWNLOAD_URL}"
+      echo -e "${YELLOW}Make sure the release contains a tarball named: ${ARCHIVE_NAME}${NC}"
+    else
+      echo -e "${RED}Failed to download Vault binary (HTTP ${http_status}).${NC}"
+    fi
     rm -rf "$TEMP_DIR"
     exit 1
   fi
 
   cd "$TEMP_DIR"
-  tar -xzf vault.tar.gz
-  
+  if ! tar -xzf vault.tar.gz; then
+    echo -e "${RED}Failed to extract downloaded archive.${NC}"
+    rm -rf "$TEMP_DIR"
+    exit 1
+  fi
+
   if [ ! -f "$BINARY_PATH" ]; then
     echo -e "${RED}Binary not found in archive${NC}"
     rm -rf "$TEMP_DIR"
