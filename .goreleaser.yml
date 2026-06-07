@@ -1,0 +1,204 @@
+version: 2
+
+project_name: vault
+
+env:
+  - GO111MODULE=on
+
+builds:
+  - env:
+      - CGO_ENABLED=0
+    ldflags:
+      - -s -w -X github.com/filebrowser/filebrowser/v2/version.Version={{ .Version }} -X github.com/filebrowser/filebrowser/v2/version.CommitSHA={{ .ShortCommit }}
+    main: main.go
+    binary: vault
+    goos:
+      - darwin
+      - linux
+      - windows
+      - freebsd
+      - openbsd
+    goarch:
+      - amd64
+      - "386"
+      - arm
+      - arm64
+      - riscv64
+    goarm:
+      - "5"
+      - "6"
+      - "7"
+    ignore:
+      - goos: darwin
+        goarch: "386"
+      # Experimental, may not work properly
+      - goos: openbsd
+        goarch: riscv64
+      # Broken as of Go 1.24, deprecated as of Go 1.26
+      - goos: windows
+        goarch: arm
+      - goos: freebsd
+        goarch: arm
+
+archives:
+  - name_template: "{{ .ProjectName }}-{{.Os}}-{{.Arch}}{{if .Arm}}v{{.Arm}}{{end}}"
+    formats: ["tar.gz"]
+    format_overrides:
+      - goos: windows
+        formats: ["zip"]
+
+dockers:
+  # Alpine docker images
+  - dockerfile: Dockerfile
+    use: buildx
+    build_flag_templates:
+      - "--pull"
+      - "--label=org.opencontainers.image.created={{.Date}}"
+      - "--label=org.opencontainers.image.name={{.ProjectName}}"
+      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+      - "--label=org.opencontainers.image.version={{.Version}}"
+      - "--label=org.opencontainers.image.source={{.GitURL}}"
+      - "--platform=linux/amd64"
+    goos: linux
+    goarch: amd64
+    image_templates:
+      - "vault/vault:{{ .Tag }}-amd64"
+      - "vault/vault:v{{ .Major }}-amd64"
+    extra_files:
+      - docker
+  - dockerfile: Dockerfile
+    use: buildx
+    build_flag_templates:
+      - "--pull"
+      - "--label=org.opencontainers.image.created={{.Date}}"
+      - "--label=org.opencontainers.image.name={{.ProjectName}}"
+      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+      - "--label=org.opencontainers.image.version={{.Version}}"
+      - "--label=org.opencontainers.image.source={{.GitURL}}"
+      - "--platform=linux/arm64"
+    goos: linux
+    goarch: arm64
+    image_templates:
+      - "vault/vault:{{ .Tag }}-arm64"
+      - "vault/vault:v{{ .Major }}-arm64"
+    extra_files:
+      - docker
+  - dockerfile: Dockerfile
+    use: buildx
+    build_flag_templates:
+      - "--pull"
+      - "--label=org.opencontainers.image.created={{.Date}}"
+      - "--label=org.opencontainers.image.name={{.ProjectName}}"
+      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+      - "--label=org.opencontainers.image.version={{.Version}}"
+      - "--label=org.opencontainers.image.source={{.GitURL}}"
+      - "--platform=linux/arm/v6"
+    goos: linux
+    goarch: arm
+    goarm: "6"
+    image_templates:
+      - "vault/vault:{{ .Tag }}-armv6"
+      - "vault/vault:v{{ .Major }}-armv6"
+    extra_files:
+      - docker
+  - dockerfile: Dockerfile
+    use: buildx
+    build_flag_templates:
+      - "--pull"
+      - "--label=org.opencontainers.image.created={{.Date}}"
+      - "--label=org.opencontainers.image.name={{.ProjectName}}"
+      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+      - "--label=org.opencontainers.image.version={{.Version}}"
+      - "--label=org.opencontainers.image.source={{.GitURL}}"
+      - "--platform=linux/arm/v7"
+    goos: linux
+    goarch: arm
+    goarm: "7"
+    image_templates:
+      - "vault/vault:{{ .Tag }}-armv7"
+      - "vault/vault:v{{ .Major }}-armv7"
+    extra_files:
+      - docker
+
+  ## s6-overlay docker images
+  - dockerfile: Dockerfile.s6
+    use: buildx
+    build_flag_templates:
+      - "--pull"
+      - "--label=org.opencontainers.image.created={{.Date}}"
+      - "--label=org.opencontainers.image.name={{.ProjectName}}"
+      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+      - "--label=org.opencontainers.image.version={{.Version}}"
+      - "--label=org.opencontainers.image.source={{.GitURL}}"
+      - "--platform=linux/amd64"
+    goos: linux
+    goarch: amd64
+    image_templates:
+      - "vault/vault:{{ .Tag }}-amd64-s6"
+      - "vault/vault:v{{ .Major }}-amd64-s6"
+    extra_files:
+      - docker
+  - dockerfile: Dockerfile.s6
+    use: buildx
+    build_flag_templates:
+      - "--pull"
+      - "--label=org.opencontainers.image.created={{.Date}}"
+      - "--label=org.opencontainers.image.name={{.ProjectName}}"
+      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+      - "--label=org.opencontainers.image.version={{.Version}}"
+      - "--label=org.opencontainers.image.source={{.GitURL}}"
+      - "--platform=linux/arm64"
+    goos: linux
+    goarch: arm64
+    image_templates:
+      - "vault/vault:{{ .Tag }}-arm64-s6"
+      - "vault/vault:v{{ .Major }}-arm64-s6"
+    extra_files:
+      - docker
+
+docker_manifests:
+  - name_template: "vault/vault:latest"
+    image_templates:
+      - "vault/vault:{{ .Tag }}-amd64"
+      - "vault/vault:{{ .Tag }}-arm64"
+      - "vault/vault:{{ .Tag }}-armv7"
+  - name_template: "vault/vault:{{ .Tag }}"
+    image_templates:
+      - "vault/vault:{{ .Tag }}-amd64"
+      - "vault/vault:{{ .Tag }}-arm64"
+      - "vault/vault:{{ .Tag }}-armv7"
+  - name_template: "vault/vault:v{{ .Major }}"
+    image_templates:
+      - "vault/vault:v{{ .Major }}-amd64"
+      - "vault/vault:v{{ .Major }}-arm64"
+      - "vault/vault:v{{ .Major }}-armv7"
+  ## s6 image manifests
+  - name_template: "vault/vault:s6"
+    image_templates:
+      - "vault/vault:{{ .Tag }}-amd64-s6"
+      - "vault/vault:{{ .Tag }}-arm64-s6"
+  - name_template: "vault/vault:{{ .Tag }}-s6"
+    image_templates:
+      - "vault/vault:{{ .Tag }}-amd64-s6"
+      - "vault/vault:{{ .Tag }}-arm64-s6"
+  - name_template: "vault/vault:v{{ .Major }}-s6"
+    image_templates:
+      - "vault/vault:v{{ .Major }}-amd64-s6"
+      - "vault/vault:v{{ .Major }}-arm64-s6"
+
+homebrew_casks:
+  - name: vault
+    repository:
+      owner: bharadwajsanket
+      name: homebrew-tap
+    commit_author:
+      name: Vault Bot
+      email: robot@bharadwajsanket.com
+    homepage: https://github.com/bharadwajsanket/filebrowser
+    description: Vault is a modern personal cloud built on top of a proven file management engine, redesigned with a clean, mobile-friendly, developer-focused experience.
+    hooks:
+      post:
+        install: |
+          if system_command("/usr/bin/xattr", args: ["-h"]).exit_status == 0
+            system_command "/usr/bin/xattr", args: ["-dr", "com.apple.quarantine", "#{staged_path}/vault"]
+          end

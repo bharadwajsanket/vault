@@ -1,0 +1,78 @@
+:root {
+  --blue: #4f46e5;
+  --dark-blue: #4338ca;
+  --red: #ef4444;
+  --dark-red: #b91c1c;
+  --moon-grey: #f4f4f5;
+
+  --icon-red: #ef4444;
+  --icon-orange: #f97316;
+  --icon-yellow: #f59e0b;
+  --icon-green: #10b981;
+  --icon-blue: #6366f1;
+  --icon-violet: #8b5cf6;
+
+  --input-red: #fecaca;
+  --input-green: #d1fae5;
+
+  --item-selected: #ffffff;
+
+  --action: #3f3f46;
+
+  --background: #fafafa;
+  --surfacePrimary: #ffffff;
+  --surfaceSecondary: #f4f4f5;
+  --divider: rgba(24, 24, 27, 0.05);
+  --iconPrimary: #6366f1;
+  --iconSecondary: #ffffff;
+  --iconTertiary: #a1a1aa;
+  --textPrimary: #71717a;
+  --textSecondary: #18181b;
+  --hover: rgba(24, 24, 27, 0.04);
+  --borderPrimary: rgba(24, 24, 27, 0.06);
+  --borderSecondary: rgba(24, 24, 27, 0.12);
+  --dividerPrimary: rgba(24, 24, 27, 0.15);
+  --dividerSecondary: rgba(24, 24, 27, 0.7);
+
+  /* Expressive radius scale */
+  --radius-sm: 12px;
+  --radius-md: 18px;
+  --radius-lg: 20px;
+  --radius-xl: 24px;
+  --radius-dialog: 24px;
+}
+
+:root.dark {
+  --blue: #818cf8;
+  --dark-blue: #6366f1;
+  --red: #f87171;
+  --dark-red: #991b1b;
+  --moon-grey: #27272a;
+
+  --icon-red: #f87171;
+  --icon-orange: #fb923c;
+  --icon-yellow: #fbbf24;
+  --icon-green: #34d399;
+  --icon-blue: #818cf8;
+  --icon-violet: #a78bfa;
+
+  --input-red: #7f1d1d;
+  --input-green: #064e3b;
+
+  --action: #f4f4f5;
+
+  --background: #09090b;
+  --surfacePrimary: #18181b;
+  --surfaceSecondary: #27272a;
+  --textPrimary: #a1a1aa;
+  --textSecondary: #f4f4f5;
+  --divider: rgba(255, 255, 255, 0.05);
+  --iconPrimary: #818cf8;
+  --iconSecondary: #18181b;
+  --iconTertiary: #71717a;
+  --hover: rgba(255, 255, 255, 0.04);
+  --borderPrimary: rgba(255, 255, 255, 0.06);
+  --borderSecondary: rgba(255, 255, 255, 0.12);
+  --dividerPrimary: rgba(255, 255, 255, 0.12);
+  --dividerSecondary: rgba(255, 255, 255, 0.5);
+}

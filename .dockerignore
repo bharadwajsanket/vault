@@ -1,0 +1,9 @@
+.venv
+dist
+.idea
+frontend/node_modules
+frontend/dist
+frontend/test-results
+filebrowser.db
+vault.db
+docs/index.md

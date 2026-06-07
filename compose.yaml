@@ -1,0 +1,32 @@
+services:
+  vault:
+    container_name: vault
+    image: vault/vault:latest
+    networks:
+      - vault
+    ports:
+      - 8000:80
+    volumes:
+      - vault:/flux/vault
+    environment:
+      - VAULT_REDIS_CACHE_URL=redis://default:vault@redis:6379 # Use rediss:// for ssl
+
+  redis:
+    container_name: redis
+    image: redis:latest
+    networks:
+      - vault
+    command:
+      - sh
+      - -c
+      - |
+        cat > /tmp/users.acl <<EOF
+        user default on >vault ~* +@all
+        EOF
+        redis-server --aclfile /tmp/users.acl
+
+networks:
+  vault:
+
+volumes:
+  vault:
