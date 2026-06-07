@@ -119,13 +119,14 @@ pnpm run lint
 
 ## Credits
 
-Built on top of FileBrowser.
+Vault is a modern redesign of [FileBrowser](https://github.com/filebrowser/filebrowser), a project originally created and maintained by [Henrique Dias (@hacdias)](https://github.com/hacdias).
 
-Vault redesign and UX work by:
+FileBrowser is a finished product on maintenance-only mode. For more details on the original project's status, please read [@hacdias' personal reflection](https://hacdias.com/2026/03/11/filebrowser/).
 
-- Sanket Bharadwaj
-- https://github.com/bharadwajsanket
+**Vault Design & Redesign:** Sanket Bharadwaj ([github.com/bharadwajsanket](https://github.com/bharadwajsanket))
+
+**Original FileBrowser Contributors:** The FileBrowser project has been built and maintained by [240+ contributors](https://github.com/filebrowser/filebrowser/graphs/contributors).
 
 ## License
 
-Vault is licensed under the [Apache License 2.0](LICENSE).
+Vault is licensed under the [Apache License 2.0](LICENSE), same as FileBrowser.
