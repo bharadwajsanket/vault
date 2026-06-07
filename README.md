@@ -1,7 +1,13 @@
 # Vault
 
-[![Build](https://github.com/bharadwajsanket/filebrowser/actions/workflows/ci.yaml/badge.svg)](https://github.com/bharadwajsanket/filebrowser/actions/workflows/ci.yaml)
-[![Go Report Card](https://goreportcard.com/badge/github.com/bharadwajsanket/filebrowser/v2)](https://goreportcard.com/report/github.com/bharadwajsanket/filebrowser/v2)
+<p align="center">
+  <img src="branding/banner.png" alt="Vault Banner">
+</p>
+
+<p align="center">
+  Modern file management, reimagined.
+</p>
+
 
 Vault is a modern redesign of FileBrowser focused on clean visuals, improved usability, and a refined self-hosted file management experience.
 
@@ -26,19 +32,6 @@ Vault is a modern redesign of FileBrowser focused on clean visuals, improved usa
 - Quick setup for first-time database initialization
 - Supported environment-based and config-file configuration
 
-## Screenshots
-
-Login
-
-![Login](www/docs/static/1.jpg)
-
-Files view
-
-![Files view](www/docs/static/2.jpg)
-
-Settings
-
-![Settings](www/docs/static/3.jpg)
 
 ## Quick Start
 
